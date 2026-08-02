@@ -1,0 +1,1 @@
+"""Statistical chart types: boxplot, violin, histogram, ecdf, pie, errorbar, hexbin, hist2d, eventplot"""

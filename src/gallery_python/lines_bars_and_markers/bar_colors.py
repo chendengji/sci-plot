@@ -1,0 +1,43 @@
+"""
+====================================
+Bar chart with individual bar colors
+====================================
+
+This is an example showing how to control bar color and legend entries
+using the *color* and *label* parameters of `~matplotlib.pyplot.bar`.
+Note that labels with a preceding underscore won't show up in the legend.
+"""
+
+import matplotlib.pyplot as plt
+
+import pandas as pd
+# 读取标准化数据
+csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+data = pd.read_csv(csv_path)
+
+fig, ax = plt.subplots()
+
+fruits = ['apple', 'blueberry', 'cherry', 'orange']
+counts = [40, 100, 30, 55]
+bar_labels = ['red', 'blue', '_red', 'orange']
+bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+ax.bar(fruits, counts, label=bar_labels, color=bar_colors)
+
+ax.set_ylabel('fruit supply')
+ax.set_title('Fruit supply by kind and color')
+ax.legend(title='Fruit color')
+
+plt.show()
+
+# %%
+# .. tags::
+#
+#    styling: color
+#    plot-type: bar
+#    level: beginner
+
+
+# 按类别分组计算统计量
+groups = data["category"].unique()
+means = [data[data["category"] == g]["value"].mean() for g in groups]

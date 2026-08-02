@@ -1,0 +1,52 @@
+"""
+==========
+Hyperlinks
+==========
+
+This example demonstrates how to set a hyperlinks on various kinds of elements.
+
+This currently only works with the SVG backend.
+
+"""
+
+
+import matplotlib.pyplot as plt
+
+import pandas as pd
+# 读取标准化数据
+csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+data = pd.read_csv(csv_path)
+import numpy as np
+
+# %%
+
+fig = plt.figure()
+s = plt.scatter([1, 2, 3], [4, 5, 6])
+s.set_urls(['https://www.bbc.com/news', 'https://www.google.com/', None])
+fig.savefig('scatter.svg')
+
+# %%
+# .. raw:: html
+#
+#    <object data="../../_static/scatter.svg" type="image/svg+xml"></object>
+
+# %%
+
+fig = plt.figure()
+delta = 0.025
+x = data["x"].values, 3.0, delta)
+X, Y = np.meshgrid(x, y)
+Z1 = np.exp(-X**2 - Y**2)
+Z2 = np.exp(-(X - 1)**2 - (Y - 1)**2)
+Z = (Z1 - Z2) * 2
+
+im = plt.imshow(Z, interpolation='bilinear', cmap="gray",
+                origin='lower', extent=(-3, 3, -3, 3))
+
+im.set_url('https://www.google.com/')
+fig.savefig('image.svg')
+
+# %%
+# .. raw:: html
+#
+#    <object data="../../_static/image.svg" type="image/svg+xml"></object>
