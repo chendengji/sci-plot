@@ -12,12 +12,13 @@ to the *z*-coordinate and places a marker at the tip.
 已改造为使用标准化 CSV 数据文件 (standard_3d.csv)。
 """
 
+import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\references\gallery_python\tests\data\standard_3d.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_3d.csv')
 data = pd.read_csv(csv_path)
 
 x = data['x']

@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
@@ -113,3 +113,5 @@ script = """
 # Insert the script at the top of the file and save it.
 tree.insert(0, ET.XML(script))
 ET.ElementTree(tree).write('svg_tooltip.svg')
+
+import os

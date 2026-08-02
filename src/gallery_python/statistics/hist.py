@@ -19,7 +19,7 @@ from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_categorized.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_categorized.csv')
 data = pd.read_csv(csv_path)
 
 # 提取不同组的数据
@@ -106,3 +106,5 @@ plt.show()
 #
 #    - `matplotlib.axes.Axes.hist` / `matplotlib.pyplot.hist`
 #    - `matplotlib.ticker.PercentFormatter`
+
+import os

@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 import numpy as np
 
@@ -47,3 +47,5 @@ binding_id = plt.connect('motion_notify_event', on_move)
 plt.connect('button_press_event', on_click)
 
 plt.show()
+
+import os

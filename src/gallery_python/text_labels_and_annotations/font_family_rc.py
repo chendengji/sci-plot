@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 print(plt.rcParams["font.sans-serif"][0])
@@ -73,3 +73,5 @@ print_text("Hello World! 03")
 plt.rcParams["font.family"] = "monospace"
 plt.rcParams["font.monospace"] = ["FreeMono"]
 print_text("Hello World! 04")
+
+import os

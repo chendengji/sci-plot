@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 import numpy as np
 
@@ -95,3 +95,5 @@ ax_zoom.images[0].set(clim=(im.get_array().min(), im.get_array().max()))
 ax_full.imshow(im.get_array(), extent=im.get_extent(), origin="lower")
 
 plt.show()
+
+import os

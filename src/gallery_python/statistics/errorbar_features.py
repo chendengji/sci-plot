@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_categorized.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_categorized.csv')
 data = pd.read_csv(csv_path)
 
 # 计算各组的均值和标准差
@@ -72,3 +72,5 @@ plt.show()
 #    in this example:
 #
 #    - `matplotlib.axes.Axes.errorbar` / `matplotlib.pyplot.errorbar`
+
+import os

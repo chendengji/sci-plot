@@ -17,7 +17,7 @@ import pandas as pd
 from matplotlib.patches import Polygon
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_categorized.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_categorized.csv')
 data = pd.read_csv(csv_path)
 
 # 按组分离数据
@@ -104,3 +104,5 @@ plt.show()
 #
 #    - `matplotlib.axes.Axes.boxplot` / `matplotlib.pyplot.boxplot`
 #    - `matplotlib.artist.Artist.set` / `matplotlib.pyplot.setp`
+
+import os

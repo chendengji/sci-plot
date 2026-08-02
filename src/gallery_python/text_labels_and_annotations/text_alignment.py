@@ -15,7 +15,7 @@ Texts are aligned relative to their anchor point depending on the properties
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
     import numpy as np
 
@@ -122,3 +122,5 @@ ax.text(left, top, 'rotated\nwith newlines',
 ax.set_axis_off()
 
 plt.show()
+
+import os

@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 
@@ -55,3 +55,5 @@ fig.canvas.mpl_connect('axes_enter_event', on_enter_axes)
 fig.canvas.mpl_connect('axes_leave_event', on_leave_axes)
 
 plt.show()
+
+import os

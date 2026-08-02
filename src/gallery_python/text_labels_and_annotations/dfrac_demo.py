@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 fig = plt.figure(figsize=(5.25, 0.75))
@@ -31,3 +31,5 @@ fig.text(0.5, 0.3, r'\dfrac: $\dfrac{a}{b}$',
 fig.text(0.5, 0.7, r'\frac: $\frac{a}{b}$',
          horizontalalignment='center', verticalalignment='center')
 plt.show()
+
+import os

@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 import numpy as np
 
@@ -77,3 +77,5 @@ axs[2, 0].annotate('Blend Mode', (0, 0.5), xytext=(-30, 0),
 fig.subplots_adjust(bottom=0.05, right=0.95)
 
 plt.show()
+
+import os

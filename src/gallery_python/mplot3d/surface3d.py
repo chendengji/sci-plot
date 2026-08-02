@@ -18,7 +18,7 @@ import pandas as pd
 from matplotlib.ticker import LinearLocator
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_grid.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_grid.csv')
 data = pd.read_csv(csv_path)
 
 # 将长格式数据转换为网格格式
@@ -67,3 +67,5 @@ plt.show()
 #    plot-type: 3D,
 #    styling: colormap,
 #    level: advanced
+
+import os

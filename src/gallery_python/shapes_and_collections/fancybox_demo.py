@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 import matplotlib.patches as mpatch
@@ -177,3 +177,5 @@ ax2.set_title("aspect=2\nmutation_aspect=0.5")
 # 按类别分组计算统计量
 groups = data["category"].unique()
 means = [data[data["category"] == g]["value"].mean() for g in groups]
+
+import os

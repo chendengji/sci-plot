@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 import numpy as np
 
@@ -32,3 +32,5 @@ for dt in np.arange(0, 2*np.pi, np.pi/2.0):
     p1 = plt.fill(xf, yf)
 
 plt.show()
+
+import os

@@ -20,7 +20,7 @@ import matplotlib.axis as maxis
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
@@ -278,3 +278,5 @@ if __name__ == '__main__':
 #    - `matplotlib.spines.Spine.register_axis`
 #    - `matplotlib.projections`
 #    - `matplotlib.projections.register_projection`
+
+import os

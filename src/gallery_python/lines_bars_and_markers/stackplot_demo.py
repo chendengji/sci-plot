@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 
 # 读取标准化测试数据（使用分组数据）
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 # 分离两组数据作为堆叠数据
@@ -60,3 +60,5 @@ plt.show()
 #
 #    plot-type: stackplot
 #    level: intermediate
+
+import os

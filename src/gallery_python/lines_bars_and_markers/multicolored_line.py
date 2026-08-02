@@ -17,7 +17,7 @@ import pandas as pd
 from matplotlib.collections import LineCollection
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 x = data['x'].values
 y = data['y'].values
@@ -50,3 +50,5 @@ plt.show()
 #    styling: color
 #    plot-type: line
 #    level: intermediate
+
+import os

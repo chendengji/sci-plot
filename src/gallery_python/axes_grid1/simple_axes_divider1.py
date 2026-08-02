@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 from mpl_toolkits.axes_grid1 import Divider, Size
@@ -72,3 +72,5 @@ ax4 = fig.add_axes(rect, axes_locator=div.new_locator(nx = data["x"].values, nx1
 label_axes(ax4, "nx = data["x"].values, nx1=4, ny = data["y"].values
 
 plt.show()
+
+import os

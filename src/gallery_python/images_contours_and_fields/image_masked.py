@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 import numpy as np
 
@@ -85,3 +85,5 @@ plt.show()
 #    - `matplotlib.figure.Figure.colorbar` / `matplotlib.pyplot.colorbar`
 #    - `matplotlib.colors.BoundaryNorm`
 #    - `matplotlib.colorbar.Colorbar.set_label`
+
+import os

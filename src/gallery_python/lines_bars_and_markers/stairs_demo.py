@@ -53,3 +53,5 @@ plt.show()
 # .. tags::
 #    plot-type: stairs
 #    level: beginner
+
+import os

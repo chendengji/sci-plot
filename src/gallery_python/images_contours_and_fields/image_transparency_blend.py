@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 # sphinx_gallery_thumbnail_number = 3
 import numpy as np
@@ -128,3 +128,5 @@ plt.show()
 #    - `matplotlib.axes.Axes.contour` / `matplotlib.pyplot.contour`
 #    - `matplotlib.colors.Normalize`
 #    - `matplotlib.axes.Axes.set_axis_off`
+
+import os

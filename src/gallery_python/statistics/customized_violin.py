@@ -18,7 +18,7 @@ from matplotlib.offsetbox import AnnotationBbox, FrozenImageBox
 from matplotlib.cbook import get_sample_data
 
 # 读取标准化测试数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_categorized.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_categorized.csv')
 data = pd.read_csv(csv_path)
 
 group_data = [data[data['category'] == cat]['value'].values for cat in data['category'].unique()]
@@ -50,3 +50,5 @@ plt.show()
 # %%
 #
 # .. tags:: plot-type: violin, domain: statistics
+
+import os

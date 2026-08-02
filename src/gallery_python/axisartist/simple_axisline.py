@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 from mpl_toolkits.axisartist.axislines import AxesZero
@@ -39,3 +39,5 @@ ax.axis["right2"].label.set_text("Label Y2")
 
 ax.plot([-2, 3, 2])
 plt.show()
+
+import os

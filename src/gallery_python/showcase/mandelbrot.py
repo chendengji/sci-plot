@@ -14,7 +14,7 @@ import numpy as np
 
 import pandas as pd
 # 读取标准化数据
-csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'
+csv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tests', 'data', 'standard_xy.csv')
 data = pd.read_csv(csv_path)
 
 
@@ -78,3 +78,5 @@ if __name__ == '__main__':
     ax.text(xmin+.025, ymin+.025, text, color="white", fontsize=12, alpha=0.5)
 
     plt.show()
+
+import os
