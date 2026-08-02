@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 *.pdf
+
+# 生成的文件（不提交）
+data/
+figs/
