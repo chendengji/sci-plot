@@ -11,7 +11,7 @@ def plot(fig, ax, df, **kwargs):
     groups = sorted(df[x_col].unique())
     data = [df[df[x_col] == g][y_col].values for g in groups]
 
-    bp = ax.boxplot(data, labels=groups, patch_artist=True,
+    bp = ax.boxplot(data, tick_labels=groups, patch_artist=True,
                     boxprops=dict(linewidth=0.8),
                     whiskerprops=dict(linewidth=0.8),
                     capprops=dict(linewidth=0.8),

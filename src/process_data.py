@@ -8,7 +8,10 @@ sci-plot 标准化数据处理脚本
 import os
 import numpy as np
 import pandas as pd
-from config import DATA_DIR
+try:
+    from .config import DATA_DIR          # 包模式
+except ImportError:
+    from config import DATA_DIR           # 平铺模式
 
 # ==================== 数据类型定义 ====================
 
@@ -19,15 +22,15 @@ DATA_TYPES = {
         'columns': ['group', 'value'],
         'charts': ['bar', 'boxplot', 'violin', 'hist', 'ecdf', 'pie',
                    'stem', 'errorbar', 'stairs', 'stackplot', 'fill_between',
-                   'eventplot', 'hexbin', 'hist2d'],
+                   'eventplot'],
         'example': 'group: Control/Treated, value: 测量值'
     },
     'xy_series': {
         'name': '连续XY数据 (XY Series)',
         'description': '两个连续数值列，x-y 关系，可选分组',
         'columns': ['x', 'y', 'group'],
-        'charts': ['line', 'scatter'],
-        'example': '应力应变曲线、时间序列'
+        'charts': ['line', 'scatter', 'hexbin', 'hist2d'],
+        'example': '应力应变曲线、时间序列、二维密度'
     },
     'distribution': {
         'name': '统计分布 (Distribution)',
@@ -187,7 +190,10 @@ def process_data(df, *args, timestamp=None, data_type='paired', v_col=None, grou
         xy_series 分组列
     """
     if timestamp is None:
-        from config import TIMESTAMP
+        try:
+            from .config import TIMESTAMP
+        except ImportError:
+            from config import TIMESTAMP
         timestamp = TIMESTAMP
 
     if data_type == 'paired':

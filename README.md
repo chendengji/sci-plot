@@ -2,7 +2,7 @@
 
 <div align="center">
 
-📊 **一键生成专业级科研图表** — 30+ 期刊风格，500+ 参考代码，开箱即用
+📊 **一键生成专业级科研图表** — 4 种期刊风格，37 种图表，500+ 参考代码，开箱即用
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://python.org)
 [![matplotlib](https://img.shields.io/badge/matplotlib-3.5%2B-red.svg)](https://matplotlib.org)
@@ -20,7 +20,7 @@ Sci-Plot 是一个面向科研场景的 **matplotlib 风格化绘图框架**，�
 |----------|------|
 | **零样板代码** | 预置 510+ 官方 gallery 参考实现，用户无需从零编写绘图代码，直接调用即可生成符合期刊规范的图表 |
 | **Agent 友好** | 标准化 API 接口支持自动化调用，可无缝集成至 AI Agent 工作流，实现"数据输入 → 图表生成"的全自动 pipeline |
-| **期刊级规范** | 内置 30+ 主流期刊风格（Nature、Science、IEEE、Cell 等），确保输出图表直接满足投稿要求 |
+| **期刊级规范** | 内置 4 种期刊风格（Nature / Science / IEEE / grid），确保输出图表满足投稿要求 |
 | **效率与稳定性** | 统一的图表接口 + 完整测试覆盖，消除样式调试的不确定性，将绘图时间从数小时缩短至分钟级 |
 
 ### 适用场景
@@ -32,7 +32,7 @@ Sci-Plot 是一个面向科研场景的 **matplotlib 风格化绘图框架**，�
 
 ### 技术特点
 
-- **模块化设计**：基础图表、统计图表、网格/场数据、三维可视化、非规则网格五大模块，覆盖 50+ 图表类型
+- **模块化设计**：基础图表、统计图表、网格/场数据、三维可视化、非规则网格五大模块，覆盖 37 种图表类型
 - **多数据格式支持**：原生支持 CSV、Excel，自动处理分组、网格化、插值等数据预处理
 - **双入口架构**：CLI 命令行适合交互式使用，Python API 适合程序化调用
 
@@ -43,7 +43,7 @@ Sci-Plot 是一个面向科研场景的 **matplotlib 风格化绘图框架**，�
 ```bash
 # 方式一：conda（推荐）
 conda env create -f environment.yml
-conda activate geo3.13
+conda activate geo
 
 # 方式二：pip
 pip install scienceplots pandas numpy matplotlib
@@ -69,23 +69,20 @@ python src/sci_plot.py \
 
 ```python
 import sys
-sys.path.insert(0, 'src')
-from sci_plot_api import plot_chart
+sys.path.insert(0, '/home/chen/claude/.claude/skills/sci-plot')   # 技能根目录
+from src.sci_plot_api import plot_chart, read_data
 
 # 加载数据
-df = plot_chart.read_data('data.csv')
-columns = plot_chart.auto_detect_columns(df, 'paired')
+df = read_data('data.csv')
 
-# 生成图表
-fig, ax = plot_chart(
-    df,
-    data_type='paired',
-    chart_type='violin',
-    style='science',
-    columns=columns
-)
-fig.savefig('figs/violin_science.png', dpi=300, bbox_inches='tight')
+# 生成图表（返回保存路径字符串，不是 (fig, ax)）
+path = plot_chart(df, chart_type='violin',
+                  x_col='group', y_col='value',
+                  style='science')
+print(path)
 ```
+
+`plot_chart` 完整 kwargs：`x_col / y_col / z_col / group_col`（列映射）、`style`（默认 `nature`）、`title`、`figsize`（None=样式自带，字号按比例联动）、`fontsize`（主控钮）、`dpi`、`constrained_layout`（默认 True）、`legend_loc`、`legend_frame`（默认 False）。
 
 ## 支持的图表类型
 
@@ -146,23 +143,14 @@ fig.savefig('figs/violin_science.png', dpi=300, bbox_inches='tight')
 
 ## 支持的期刊风格
 
-| 风格 | 对应期刊 |
-|------|----------|
-| `nature` | Nature |
-| `science` | Science |
-| `ieee` | IEEE Transactions |
-| `ieee tran` | IEEEtran |
-| `cell` | Cell |
-| `plos` | PLOS ONE |
-| `elsevier` | Elsevier 期刊 |
-| `springer` | Springer 期刊 |
-| `aps` | APS 物理期刊 |
-| `jgr` | JGR (地球物理) |
-| `glt` | 地学线性图 |
-| `grid` | 基础网格风格 |
-| `scienceplain` | 简洁科学风 |
+| 风格 | 对应期刊 | 自带 figsize | font.size |
+|------|----------|-------------|-----------|
+| `nature` | Nature | (3.3, 2.5) | 7.0 |
+| `science` | Science | (3.3, 2.5) | 7.0 |
+| `ieee` | IEEE Transactions | (3.5, 2.6) | 8.0 |
+| `grid` | 带网格科学风 | (3.3, 2.5) | 7.0 |
 
-> 完整列表见 `src/config.py` 中的 `STYLES` 字典。
+> figsize 与 font.size 配套设计；`plot_chart` 默认不覆盖，传 `figsize=` 时字号按比例联动，传 `fontsize=` 则作为主控钮。完整列表见 `src/sci_plot_api.py` 的 `AVAILABLE_STYLES`。
 
 ## 项目结构
 
@@ -173,12 +161,12 @@ sci-plot/
 │   ├── sci_plot_api.py           # Python API 入口
 │   ├── config.py                 # 配置（风格、路径、数据）
 │   ├── process_data.py           # 数据处理（6 种数据类型）
-│   ├── charts/                   # 43 个图表脚本
-│   │   ├── basic/               # 基础图表 (8)
-│   │   ├── stats/               # 统计图表 (10)
-│   │   ├── arrays/              # 网格/场数据 (8)
-│   │   ├── plot3d/              # 三维图表 (11)
-│   │   └── unstructured/        # 非规则网格 (5)
+│   ├── charts/                   # 37 个图表脚本
+│   │   ├── basic/               # 基础图表 (7)
+│   │   ├── stats/               # 统计图表 (9)
+│   │   ├── arrays/              # 网格/场数据 (7)
+│   │   ├── plot3d/              # 三维图表 (10)
+│   │   └── unstructured/        # 非规则网格 (4)
 │   └── gallery_python/          # 510+ 官方参考代码
 │       ├── lines_bars_and_markers/
 │       ├── statistics/
@@ -200,7 +188,7 @@ sci-plot/
 | 数据类型 | 说明 | 推荐图表 |
 |----------|------|----------|
 | `paired` | 成对分组数据 | bar, boxplot, violin, hist |
-| `xy_series` | 连续 XY 序列 | line, scatter |
+| `xy_series` | 连续 XY 序列 | line, scatter, hexbin, hist2d |
 | `distribution` | 统计分布 | violin, hist, ecdf, pie |
 | `gridded` | 规则网格 (X,Y,Z) | pcolormesh, contour, quiver |
 | `irregular` | 非规则网格 (x,y,z) | tricontour, tripcolor |
@@ -244,10 +232,10 @@ python src/sci_plot.py --interactive
 
 ### 批量生成多风格对比
 ```python
-from sci_plot_api import plot_chart
+from src.sci_plot_api import plot_chart
 for style in ['nature', 'science', 'ieee', 'grid']:
-    fig, ax = plot_chart(df, 'paired', 'bar', style, columns)
-    fig.savefig(f'figs/bar_{style}.png', dpi=300, bbox_inches='tight')
+    path = plot_chart(df, 'bar', x_col='group', y_col='value', style=style)
+    print(style, path)
 ```
 
 ## 依赖
