@@ -218,6 +218,14 @@ CHARTS_3D = {'plot3d', 'scatter3d', 'surface3d', 'wire3d', 'bar3d',
 # 可用样式（scienceplots 实测可用；'ieeetran' 已移除，scienceplots 无此样式会抛 OSError）
 AVAILABLE_STYLES = ['science', 'nature', 'ieee', 'grid']
 
+# 默认 colormap：感知均匀 + 色盲友好（SCI 期刊场数据图通用）
+DEFAULT_CMAP = 'viridis'
+
+# 这些图表默认保留四边框（数据填满画布，去 spine 会缺角），其余 2D 图默认去顶/右 spine
+DESPINE_OFF = {'contour', 'contourf', 'pcolormesh', 'imshow',
+               'quiver', 'streamplot', 'barbs',
+               'tricontour', 'tricontourf', 'tripcolor'}
+
 
 # ==================== 核心 API ====================
 
@@ -319,15 +327,15 @@ def _preprocess_data(df, chart_type, timestamp, **kwargs):
 
 
 def _apply_typography(figsize=None, fontsize=None):
-    """按期刊样式基准同步缩放字号，避免“大图小字”失衡。
+    """按期刊样式基准统一缩放字号 / 线宽 / 刻度，保持视觉比例。
 
-    scienceplots 的 nature/science 样式是“figsize + font.size 配套”设计的
-    （如 nature: 3.3in 宽 + 7pt 字）。若单独放大 figsize 而不动字号，字会
-    相对图极小、留白失衡——本函数负责让两者联动。
+    scienceplots 样式是「figsize + font.size + 线宽」配套设计的（如 nature:
+    3.3in + 7pt + linewidth 1.0）。单独放大 figsize 而不动字号/线宽，会「大图小字
+    细线」失衡——本函数让字号、线宽、轴宽、刻度按同一比例同步缩放。
 
     - 都为 None：完全沿用样式自带值（推荐，符合期刊比例）。
-    - figsize= 自定义：按 新宽/基准宽 比例同步放大 font.size 等字号。
-    - fontsize= 自定义：作为主控钮，覆盖 font.size 并令各元素字号跟随。
+    - figsize= 自定义：按 新宽/基准宽 比例同步放大字号/线宽/刻度。
+    - fontsize= 自定义：按 新字号/基准字号 反推比例，同步放大线宽/刻度。
     """
     base_w = plt.rcParams['figure.figsize'][0]
     base_font = plt.rcParams['font.size']
@@ -337,17 +345,27 @@ def _apply_typography(figsize=None, fontsize=None):
         scale = figsize[0] / base_w if base_w else 1.0
         new_font = base_font * scale
     else:
+        scale = 1.0
         new_font = base_font
 
     if fontsize is not None:
+        scale = fontsize / base_font if base_font else 1.0
         new_font = fontsize
 
     if figsize is not None or fontsize is not None:
+        # —— 字号族 ——
         plt.rcParams['font.size'] = new_font
         for k in ('axes.labelsize', 'xtick.labelsize', 'ytick.labelsize',
                   'legend.fontsize'):
             plt.rcParams[k] = new_font
         plt.rcParams['axes.titlesize'] = new_font + 1
+        # —— 线宽/刻度族：同比例缩放，与字号保持平衡 ——
+        for k in ('lines.linewidth', 'lines.markersize', 'axes.linewidth',
+                  'xtick.major.width', 'ytick.major.width',
+                  'xtick.major.size', 'ytick.major.size',
+                  'xtick.minor.width', 'ytick.minor.width',
+                  'grid.linewidth'):
+            plt.rcParams[k] = plt.rcParams[k] * scale
 
 
 def plot_chart(df, chart_type, **kwargs):
@@ -365,8 +383,11 @@ def plot_chart(df, chart_type, **kwargs):
         group_col : str, xy_series 类型的分组列
         style : str, 样式名 (默认 'nature')
         title : str, 图表标题
-        figsize : tuple or None, 图片尺寸；None=用样式自带基准（推荐，字号配套）
-        fontsize : float or None, 基准字号(pt)；None=用样式自带；给定则作为主控钮
+        figsize : tuple or None, 图片尺寸；None=用样式自带基准（推荐，字号/线宽配套）
+        fontsize : float or None, 基准字号(pt)；None=用样式自带；给定则作主控钮(线宽/刻度同比例缩放)
+        linewidth : float or None, 数据线宽；None=跟随样式(随 figsize 缩放)；line/scatter/fill_between 等生效
+        cmap : str, 场数据图 colormap (默认 'viridis'，感知均匀+色盲友好)
+        despine : bool or None, 是否去顶/右轴线；None=自动(2D 折线/柱类 True，场数据/3D False)
         dpi : int, 输出 DPI (默认 300)
         constrained_layout : bool, 是否启用约束布局 (默认 True；多子图/colorbar/legend 不打架)
         legend_loc : str or None, 图例位置 (如 'best','upper left'；None=默认)
@@ -380,16 +401,24 @@ def plot_chart(df, chart_type, **kwargs):
     title = kwargs.pop('title', None)
     figsize = kwargs.pop('figsize', None)
     fontsize = kwargs.pop('fontsize', None)
+    linewidth = kwargs.pop('linewidth', None)
+    cmap = kwargs.pop('cmap', DEFAULT_CMAP)
+    despine = kwargs.pop('despine', None)
     dpi = kwargs.pop('dpi', 300)
     legend_loc = kwargs.pop('legend_loc', None)
     legend_frame = kwargs.pop('legend_frame', False)
     use_constrained = kwargs.pop('constrained_layout', True)
 
+    # 把 colormap / 线宽透传给图表模块（场数据图读 cmap；line 类读 linewidth）
+    kwargs.setdefault('cmap', cmap)
+    if linewidth is not None:
+        kwargs['linewidth'] = linewidth
+
     # 1. 数据预处理（标准化），每次调用生成独立时间戳
     _timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     df_proc = _preprocess_data(df, chart_type, _timestamp, **kwargs)
 
-    # 2. 设置样式 + 中文字体 + 字号(与 figsize 联动)
+    # 2. 设置样式 + 中文字体 + 字号/线宽(与 figsize 统一缩放)
     plt.style.use([style, 'no-latex'])
     plt.rcParams['figure.dpi'] = dpi
     _setup_cjk_font()
@@ -409,12 +438,19 @@ def plot_chart(df, chart_type, **kwargs):
     module = _import_chart_module(chart_type)
     module.plot(fig, ax, df_proc, **kwargs)
 
-    # 5. 统一图例：默认无边框、位置可配（模块内 ax.legend() 的标签会保留）
+    # 5. 去顶/右轴线（SCI 干净风格；场数据/3D 默认保留四框）
+    if despine is None:
+        despine = (chart_type not in DESPINE_OFF) and (not is_3d)
+    if despine and not is_3d:
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+
+    # 6. 统一图例：默认无边框、位置可配（模块内 ax.legend() 的标签会保留）
     handles, labels = ax.get_legend_handles_labels()
     if labels:
         ax.legend(handles, labels, loc=legend_loc, frameon=legend_frame)
 
-    # 6. 保存
+    # 7. 保存
     if not is_3d and use_constrained:
         save_kw = dict(dpi=dpi)  # constrained_layout 已处理布局，不再 tight
     else:

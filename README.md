@@ -150,7 +150,7 @@ print(path)
 | `ieee` | IEEE Transactions | (3.5, 2.6) | 8.0 |
 | `grid` | 带网格科学风 | (3.3, 2.5) | 7.0 |
 
-> figsize 与 font.size 配套设计；`plot_chart` 默认不覆盖，传 `figsize=` 时字号按比例联动，传 `fontsize=` 则作为主控钮。完整列表见 `src/sci_plot_api.py` 的 `AVAILABLE_STYLES`。
+> figsize / font.size / 线宽 / 刻度配套设计；`plot_chart` 默认不覆盖，传 `figsize=` 或 `fontsize=` 时四者按同比例统一缩放。场数据图默认 `cmap='viridis'`（可 `cmap=` 覆盖）；2D 折线/柱类默认去顶右轴线（`despine`）。完整美化规定见 `SKILL.md` 的「样式与美化规定」。完整样式列表见 `src/sci_plot_api.py` 的 `AVAILABLE_STYLES`。
 
 ## 项目结构
 

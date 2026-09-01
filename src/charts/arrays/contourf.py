@@ -18,7 +18,7 @@ def plot(fig, ax, df, **kwargs):
     for _, row in df.iterrows():
         Z[y_to_idx[row[y_col]], x_to_idx[row[x_col]]] = row[z_col]
 
-    cf = ax.contourf(X, Y, Z, levels=10, cmap='viridis')
+    cf = ax.contourf(X, Y, Z, levels=10, cmap=kwargs.get('cmap', 'viridis'))
     fig.colorbar(cf, ax=ax)
     ax.set_title(kwargs.get('title', 'Filled Contour Plot'))
     ax.set_xlabel(x_col)

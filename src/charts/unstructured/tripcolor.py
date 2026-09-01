@@ -8,7 +8,7 @@ def plot(fig, ax, df, **kwargs):
     z_col = kwargs.get('z_col')
 
     tc = ax.tripcolor(df[x_col], df[y_col], df[z_col],
-                      cmap='viridis', shading='gouraud')
+                      cmap=kwargs.get('cmap', 'viridis'), shading='gouraud')
     fig.colorbar(tc, ax=ax)
     ax.set_title(kwargs.get('title', 'Tripcolor'))
     ax.set_xlabel(x_col)

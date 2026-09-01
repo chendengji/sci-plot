@@ -9,7 +9,7 @@ def plot(fig, ax, df, **kwargs):
 
     cntr = ax.tricontour(df[x_col], df[y_col], df[z_col],
                          levels=10, colors='black')
-    ax.clabel(cntr, inline=True, fontsize=8)
+    ax.clabel(cntr, inline=True)
     ax.set_title(kwargs.get('title', 'Triangular Contour'))
     ax.set_xlabel(x_col)
     ax.set_ylabel(y_col)

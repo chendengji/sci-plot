@@ -10,7 +10,7 @@ def plot(fig, ax, df, **kwargs):
         cols = df.select_dtypes(include='number').columns[:2]
         x_col, y_col = cols[0], cols[1]
 
-    hb = ax.hexbin(df[x_col], df[y_col], gridsize=20, cmap='viridis')
+    hb = ax.hexbin(df[x_col], df[y_col], gridsize=20, cmap=kwargs.get('cmap', 'viridis'))
     fig.colorbar(hb, ax=ax)
     ax.set_title(kwargs.get('title', 'Hexbin Plot'))
     ax.set_xlabel(x_col)
