@@ -5,7 +5,7 @@
 ## 前置条件
 
 - 环境: `conda geo3.13` (或安装了 scienceplots 的 Python 环境)
-- 工作目录: `D:\CODE\sci-plot`
+- 工作目录: `<项目根>`（即本仓库根目录，下文路径均相对此目录）
 - 脚本路径: `src/sci_plot_api.py` (统一API入口)
 
 ## 工作流程
@@ -110,7 +110,7 @@ print(f"Saved: {path}")
 
 ### Step 6: 展示结果
 
-- 告诉用户图片保存路径 (`D:\CODE\sci-plot\figs\`)
+- 告诉用户图片保存路径 (`<项目根>\figs\`)
 - 展示图片给用户预览
 - 询问是否要调整参数或换一种图表类型
 
@@ -132,7 +132,7 @@ path = quick_plot("data.csv", "xy_line", x_col='x', y_col='y', group_col='group'
 
 ## 输出文件
 
-- 图片: `D:\CODE\sci-plot\figs\fig_{type}_{timestamp}.png`
+- 图片: `<项目根>\figs\fig_{type}_{timestamp}.png`
 - 300 DPI, bbox_inches='tight'
 - 时间戳命名，不会覆盖
 - 处理后的标准化数据自动保存到 `data/` 目录

@@ -7,8 +7,8 @@ import os
 import re
 import pandas as pd
 
-# 标准化数据路径
-DATA_DIR = r'D:\CODE\sci-plot\tests\data'
+# 标准化数据路径（相对本工具所在目录）
+DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tests', 'data')
 
 # 数据文件映射
 DATA_FILES = {
@@ -234,7 +234,7 @@ import pandas as pd
 
 
 def main():
-    base = r'D:\CODE\sci-plot\references\gallery_python'
+    base = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'references', 'gallery_python')
     
     # 收集所有脚本
     scripts = []
