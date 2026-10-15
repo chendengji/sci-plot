@@ -10,7 +10,7 @@ def plot(fig, ax, df, **kwargs):
 
     sc = ax.scatter(df[x_col], df[y_col], df[z_col],
                     c=df[c_col] if c_col else None,
-                    cmap='viridis', s=30, alpha=0.7)
+                    cmap=kwargs.get('cmap', 'viridis'), s=30, alpha=0.7)
     if c_col:
         fig.colorbar(sc, ax=ax, shrink=0.5)
     ax.set_title(kwargs.get('title', '3D Scatter'))

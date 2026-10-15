@@ -8,7 +8,7 @@ def plot(fig, ax, df, **kwargs):
     z_col = kwargs.get('z_col')
 
     cf = ax.tricontourf(df[x_col], df[y_col], df[z_col],
-                        levels=10, cmap='viridis')
+                        levels=10, cmap=kwargs.get('cmap', 'viridis'))
     fig.colorbar(cf, ax=ax)
     ax.set_title(kwargs.get('title', 'Filled Triangular Contour'))
     ax.set_xlabel(x_col)

@@ -18,7 +18,7 @@ def plot(fig, ax, df, **kwargs):
     for _, row in df.iterrows():
         Z[y_to_idx[row[y_col]], x_to_idx[row[x_col]]] = row[z_col]
 
-    surf = ax.plot_surface(X, Y, Z, cmap='viridis',
+    surf = ax.plot_surface(X, Y, Z, cmap=kwargs.get('cmap', 'viridis'),
                            linewidth=0, antialiased=True, alpha=0.8)
     fig.colorbar(surf, ax=ax, shrink=0.5)
     ax.set_title(kwargs.get('title', '3D Surface'))

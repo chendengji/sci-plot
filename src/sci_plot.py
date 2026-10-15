@@ -14,10 +14,10 @@ import argparse
 
 import pandas as pd
 
-from config import DATA_DIR, FIGS_DIR, TIMESTAMP
+# 先把 src/ 加入路径，使平铺导入（from config import ...）在脚本模式下可用
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# 使用新的 API 结构
-sys.path.insert(0, os.path.dirname(__file__))
+from config import DATA_DIR, FIGS_DIR, TIMESTAMP
 from sci_plot_api import plot_chart, list_charts, read_data, auto_detect_columns, recommend_charts
 from process_data import DATA_TYPES
 
@@ -90,12 +90,16 @@ def main():
                 y = input(f"Y column (value) [{default_y}]: ").strip() or default_y
                 args.columns = f"x={x},y={y}"
 
-    # 2. 解析列映射
+    # 2. 解析列映射（CLI 短名 x/y/z/group → API 的 x_col/y_col/... ）
+    _COL_ALIASES = {'x': 'x_col', 'y': 'y_col', 'z': 'z_col',
+                    'group': 'group_col', 'u': 'u_col', 'v': 'v_col',
+                    'w': 'w_col', 'c': 'c_col', 'value': 'y_col'}
     columns = {}
     if args.columns:
         for pair in args.columns.split(','):
             key, val = pair.split('=')
-            columns[key.strip()] = val.strip()
+            key = _COL_ALIASES.get(key.strip(), key.strip())
+            columns[key] = val.strip()
 
     print(f"\n[Chart] {args.chart}")
     print(f"[Style] {args.style}")

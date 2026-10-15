@@ -18,7 +18,7 @@ def plot(fig, ax, df, **kwargs):
     for _, row in df.iterrows():
         Z[y_to_idx[row[y_col]], x_to_idx[row[x_col]]] = row[z_col]
 
-    im = ax.imshow(Z, cmap='viridis', aspect='auto',
+    im = ax.imshow(Z, cmap=kwargs.get('cmap', 'viridis'), aspect='auto',
                    extent=[x_unique[0], x_unique[-1], y_unique[0], y_unique[-1]])
     fig.colorbar(im, ax=ax)
     ax.set_title(kwargs.get('title', 'Imshow'))

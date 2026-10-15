@@ -8,7 +8,7 @@ def plot(fig, ax, df, **kwargs):
     z_col = kwargs.get('z_col')
 
     surf = ax.plot_trisurf(df[x_col], df[y_col], df[z_col],
-                           cmap='viridis', linewidth=0, alpha=0.8)
+                           cmap=kwargs.get('cmap', 'viridis'), linewidth=0, alpha=0.8)
     fig.colorbar(surf, ax=ax, shrink=0.5)
     ax.set_title(kwargs.get('title', '3D Triangulated Surface'))
     ax.set_xlabel(x_col)

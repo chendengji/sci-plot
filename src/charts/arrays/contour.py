@@ -19,7 +19,7 @@ def plot(fig, ax, df, **kwargs):
         Z[y_to_idx[row[y_col]], x_to_idx[row[x_col]]] = row[z_col]
 
     cntr = ax.contour(X, Y, Z, levels=10, colors='black')
-    ax.clabel(cntr, inline=True, fontsize=8)
+    ax.clabel(cntr, inline=True)
     ax.set_title(kwargs.get('title', 'Contour Plot'))
     ax.set_xlabel(x_col)
     ax.set_ylabel(y_col)
