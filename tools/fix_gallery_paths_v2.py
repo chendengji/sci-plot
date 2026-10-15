@@ -3,7 +3,7 @@
 import os
 import re
 
-GALLERY_DIR = r'D:\CODE\sci-plot\src\gallery_python'
+GALLERY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'gallery_python')
 
 # 所有需要替换的模式
 REPLACEMENTS = [

@@ -3,7 +3,7 @@
 import os
 import re
 
-GALLERY_DIR = r'D:\CODE\sci-plot\src\gallery_python'
+GALLERY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'src', 'gallery_python')
 
 # 硬编码路径模式
 OLD_PATTERN = r"csv_path = r'D:\CODE\sci-plot\tests\data\standard_xy.csv'"

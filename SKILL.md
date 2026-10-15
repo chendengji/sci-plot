@@ -5,21 +5,21 @@
 ## 前置条件
 
 - **环境**: `conda geo`（已装 scienceplots；不是 geo3.13）
-- **技能根目录**: `/home/chen/claude/.claude/skills/sci-plot`（本 SKILL.md 所在目录）
+- **技能根目录**: `<技能目录>`（本 SKILL.md 所在目录，下文路径均相对此目录）
 - **统一 API 入口**: `src/sci_plot_api.py` 中的 `plot_chart()`
 
 ### 导入方式（任选其一）
 
 ```python
-# 方式 A（推荐）：把技能根目录加入 sys.path，输出写到用户当前工作目录/plot/
+# 方式 A（推荐）：把技能根目录加入 sys.path，输出写到 <技能目录>/figs/
 import sys
-sys.path.insert(0, '/home/chen/claude/.claude/skills/sci-plot')
+sys.path.insert(0, '<技能目录>')
 from src.sci_plot_api import plot_chart, read_data, auto_detect_columns, recommend_charts, list_charts, list_styles
 ```
 
 ```bash
-# 方式 B：cd 到技能根目录后用 -m 运行（输出会写到技能目录/plot/，不建议）
-cd /home/chen/claude/.claude/skills/sci-plot && python -m src.sci_plot_api -i data.csv -ch line --xcol x --ycol y
+# 方式 B：cd 到技能根目录后用 -m 运行（输出写到 <技能目录>/figs/，不建议）
+cd <技能目录> && python -m src.sci_plot_api -i data.csv -ch line --xcol x --ycol y
 ```
 
 > 旧写法 `from src.sci_plot_api import ...` 若不先把技能根目录加入 `sys.path`，会报 `ModuleNotFoundError: No module named 'config'`。务必先 `sys.path.insert`。
@@ -105,6 +105,7 @@ scienceplots 的 4 个样式，每个自带一套配套 rcParams（figsize / fon
 
 以上是**默认 + 原则**，不是逐元素硬规。LLM 应：① 默认值通常够用，先按默认出图；② 仅在数据/版式确有需要时改对应 kwarg（如双向数据换 `coolwarm`、多子图加大 `figsize`、标签补单位）；③ 避免无意义堆砌修饰。给具体图情留判断空间，不必每张图都把 kwarg 调满。
 
+
 ## 工作流程
 
 ### Step 1: 询问数据位置
@@ -178,12 +179,13 @@ path = plot_chart(df, 'line',              # 不是 'xy_line'
                   title='Stress-Strain Curve')
 ```
 
-数据会自动标准化处理（去空值、排序、保存到 `plot/data/`）。
+数据会自动标准化处理（去空值、排序、保存到 `data/`）。
 
 ### Step 6: 展示结果
 
-- 告诉用户图片路径（`<当前工作目录>/plot/fig_{type}_{timestamp}.png`）
-- 展示图片预览，询问是否调整参数或换图表类型
+- 告诉用户图片保存路径（`<技能目录>/figs/fig_{type}_{timestamp}.png`）
+- 展示图片预览
+- 询问是否要调整参数或换一种图表类型
 
 ## 批量生成多图
 
@@ -202,10 +204,10 @@ path = quick_plot("data.csv", "line", x_col='x', y_col='y', group_col='group')
 
 ## 输出文件
 
-- 图片: `<当前工作目录>/plot/fig_{type}_{timestamp}.png`，300 DPI
-- 时间戳命名，不覆盖
-- 标准化数据自动存到 `<当前工作目录>/plot/data/`
-- 输出根目录可用环境变量 `SCI_PLOT_OUTPUT_DIR` 覆盖（如不想污染当前目录）
+- 图片: `<技能目录>/figs/fig_{type}_{timestamp}.png`
+- 300 DPI, bbox_inches='tight'
+- 时间戳命名，不会覆盖
+- 处理后的标准化数据自动保存到 `data/` 目录
 
 ## 注意事项
 

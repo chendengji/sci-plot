@@ -69,7 +69,7 @@ python src/sci_plot.py \
 
 ```python
 import sys
-sys.path.insert(0, '/home/chen/claude/.claude/skills/sci-plot')   # 技能根目录
+sys.path.insert(0, '<技能目录>')   # 技能根目录（本仓库根目录）
 from src.sci_plot_api import plot_chart, read_data
 
 # 加载数据
